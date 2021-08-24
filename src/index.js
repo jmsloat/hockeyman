@@ -62,6 +62,15 @@ client.once('ready', () => {
             console.log(e)
         }
     })();
+
+    client.user.setPresence({
+        status: 'online',
+        activity: {
+            name: 'drinking',
+            type: 'PLAYING',
+            url: 'https://www.google.com'
+        }
+    })
 })
 
 client.login(TOKEN);
