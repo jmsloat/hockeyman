@@ -23,7 +23,7 @@ if(cfg.yahoo.accessToken === undefined || cfg.yahoo.accessToken === "" || cfg.ya
 
 
 async function refreshAuthToken() {
-    let response =  axios({
+    let response =  await axios({
         url: yahoo.AUTH_ENDPOINT,
         method: "post",
         headers: {
@@ -40,8 +40,8 @@ async function refreshAuthToken() {
         console.error(`Error in refreshAuthorizationToken(): ${err}`);
     });
 
-    let accessToken = token.data.access_token;
-    let refresh = token.data.refresh_token;
+    let accessToken = response.data.access_token;
+    let refresh = response.data.refresh_token;
 
     cfg.yahoo.refreshToken = refresh;
     cfg.yahoo.accessToken = accessToken;
@@ -107,7 +107,7 @@ async function makeRequest(url){
         return jsonData;
     } catch (err) {
         if (err.response.data && err.response.data.error && err.response.data.error.description && err.response.data.error.description.includes("token_expired")) {
-            const newToken = await refreshToken(cfg.yahoo.refreshToken);
+            const newToken = await refreshAuthToken(cfg.yahoo.refreshToken);
             if (newToken && newToken.data && newToken.data.access_token) {
 
                 cfg.yahoo.refreshToken = newToken.data.refresh_token;

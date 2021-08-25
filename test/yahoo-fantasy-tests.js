@@ -13,7 +13,7 @@ describe('yahoo fantasy api', () => {
 
     describe('games', () => {
         it('can get some games', async () => {
-            let teams = yf.getGame();
+            let teams = await yf.getGame();
             teams.should.not.be.undefined;
         });
     })
