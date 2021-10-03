@@ -13,7 +13,7 @@ class YahooApi {
      async getLeagueSettings() {
         let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/settings', {league_key: leagueId});
         let response = await makeRequest(url);
-        return response;
+        return response.fantasy_content.league;
     };
 
     async getGame(gameKey) {

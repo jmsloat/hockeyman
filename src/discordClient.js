@@ -42,6 +42,9 @@ class _DiscordClient extends EventEmitter {
         });
 
        this.client.once('ready', () => {
+           let guild = this.client.guilds.cache.get(this.GUILDID);
+           this.channel = guild.channels.cache.find(e => e.name === 'general');
+
            this.#onDiscordReady()
        });
 
@@ -49,8 +52,8 @@ class _DiscordClient extends EventEmitter {
         this.client.login(this.TOKEN)
     }
 
-    async sendMessage() {
-
+    async sendMessage(message) {
+        this.channel.send(message);
     }
 
     // private methods? javascript can do this?
