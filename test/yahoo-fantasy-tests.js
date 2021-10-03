@@ -5,12 +5,6 @@ import {should} from "chai";
 chai.should();
 
 describe('yahoo fantasy api', () => {
-    describe('authentication', () => {
-        it('can authenticate', async () => {
-            let success = await yf.auth();
-            success.should.not.be.a('boolean')
-        })
-    });
 
     describe('games', () => {
         it('can get some games', async () => {
@@ -23,12 +17,12 @@ describe('yahoo fantasy api', () => {
             keys.length.should.be.gte(22);
         })
 
-        it('can get the nhl 2020 game key', async () => {
+        it('can get the nhl 2021 game key', async () => {
             let keys = await yf.getGameKeys();
             let found = false;
             let key = '';
             for(let k of keys) {
-                if(k.season === '2020'){
+                if(k.season === '2021'){
                     found = true;
                     key = k.game_key;
                 }

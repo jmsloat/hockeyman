@@ -5,8 +5,7 @@ import * as parser from 'xml2json'
 import urlcat from "urlcat";
 
 export async function getLeagueSettings() {
-    let league = `403.l.1000`
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/settings', {league_key: league});
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/settings', {league_key: leagueId});
     let response = await makeRequest(url);
     return response;
 }
@@ -38,23 +37,20 @@ export async function getGameKeys() {
 }
 
 export async function getPublicLeages(gameKey) {
-    let league = `${gameKey}.l.1000`
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key', {league_key: league});
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key', {league_key: leagueId});
     let response = await makeRequest(url);
     return response;
 }
 
 export async function getTeams() {
-    let league = `403.l.1000`
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/teams', {league_key: league});
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/teams', {league_key: leagueId});
 
     let response = await makeRequest(url);
     return response.fantasy_content.league.teams;
 }
 
 export async function getScoreboard() {
-    let league = `403.l.1000`
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/scoreboard', {league_key: league});
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/scoreboard', {league_key: leagueId});
 
     let response = await makeRequest(url);
     return response.fantasy_content.league.scoreboard;
@@ -65,6 +61,7 @@ const consumerkey = cfg.yahoo.consumerKey;
 const secret = cfg.yahoo.secret;
 const authcode = cfg.yahoo.authCode;
 let refreshToken = cfg.yahoo.refreshToken;
+const leagueId = cfg.yahoo.gameKey + ".l." + cfg.yahoo.leagueId
 
 
 let yahoo = {
