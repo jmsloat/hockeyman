@@ -48,6 +48,17 @@ class _DiscordClient extends EventEmitter {
            this.#onDiscordReady()
        });
 
+       this.client.on('message', async (message) => {
+           if(message.author.id === this.client.user.id) return false;
+
+           if(message.mentions.has(this.client.user)){
+               if(message.author.username === 'Coyne')
+                   await message.reply("fuck you")
+               else
+                   await message.reply('fuck kevin');
+           }
+        })
+
         this.rest = new REST.REST({version: '9'}).setToken(this.TOKEN);
         this.client.login(this.TOKEN)
     }
