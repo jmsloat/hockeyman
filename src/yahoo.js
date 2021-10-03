@@ -4,57 +4,57 @@ import * as config from '#src/config';
 import * as parser from 'xml2json'
 import urlcat from "urlcat";
 
-export async function getLeagueSettings() {
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/settings', {league_key: leagueId});
-    let response = await makeRequest(url);
-    return response;
+
+export default {
+    getApi : () => {return api;}
 }
 
-export async function auth() {
-    let code = await getAccessTokens();
-    if(code === '-1') return false;
+class YahooApi {
+     async getLeagueSettings() {
+        let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/settings', {league_key: leagueId});
+        let response = await makeRequest(url);
+        return response;
+    };
 
-    yahoo.access_code = code;
-
-    return true;
-}
-
-export async function getGame(gameKey) {
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/game/:game_key', {game_key: gameKey});
-    let response = await makeRequest(url);
-    return response;
-}
-
-export async function getGameKeys() {
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/games;game_codes=nhl');
-    let response = await makeRequest(url);
-
-    if(response.fantasy_content){
-        return response.fantasy_content.games.game;
+    async getGame(gameKey) {
+        let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/game/:game_key', {game_key: gameKey});
+        let response = await makeRequest(url);
+        return response;
     }
 
-    return [];
+    async getGameKeys() {
+        let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/games;game_codes=nhl');
+        let response = await makeRequest(url);
+
+        if(response.fantasy_content){
+            return response.fantasy_content.games.game;
+        }
+
+        return [];
+    }
+
+    async getPublicLeages(gameKey) {
+        let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key', {league_key: leagueId});
+        let response = await makeRequest(url);
+        return response;
+    }
+
+    async getTeams() {
+        let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/teams', {league_key: leagueId});
+
+        let response = await makeRequest(url);
+        return response.fantasy_content.league.teams;
+    }
+
+    async getScoreboard() {
+        let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/scoreboard', {league_key: leagueId});
+
+        let response = await makeRequest(url);
+        return response.fantasy_content.league.scoreboard;
+    }
 }
 
-export async function getPublicLeages(gameKey) {
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key', {league_key: leagueId});
-    let response = await makeRequest(url);
-    return response;
-}
-
-export async function getTeams() {
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/teams', {league_key: leagueId});
-
-    let response = await makeRequest(url);
-    return response.fantasy_content.league.teams;
-}
-
-export async function getScoreboard() {
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/scoreboard', {league_key: leagueId});
-
-    let response = await makeRequest(url);
-    return response.fantasy_content.league.scoreboard;
-}
+let api = new YahooApi();
 
 let cfg = config.readConfig();
 const consumerkey = cfg.yahoo.consumerKey;

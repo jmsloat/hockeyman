@@ -8,6 +8,8 @@ import {Client, Collection, Intents} from 'discord.js';
 
 import fs from 'fs'
 
+import Bree from 'bree'
+
 const commands = [];
 const commandFiles = fs.readdirSync('src/commands').filter(file => file.endsWith('js'));
 
@@ -44,6 +46,21 @@ client.on('interactionCreate', async interaction => {
 });
 
 
+function initializeJobs() {
+    let bree = new Bree({
+        root: false,
+        jobs: [
+            {
+                name: 'job man',
+                path: './src/scheduled_jobs/fuck-you-kevin.js',
+                interval: "20 seconds"
+            }
+        ]
+    });
+
+    bree.start();
+}
+
 client.once('ready', () => {
     console.log('Ready!');
 
@@ -70,7 +87,9 @@ client.once('ready', () => {
             type: 'PLAYING',
             url: 'https://www.google.com'
         }
-    })
+    });
+
+    initializeJobs();
 })
 
 client.login(TOKEN);

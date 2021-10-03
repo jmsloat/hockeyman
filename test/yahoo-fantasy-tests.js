@@ -1,6 +1,8 @@
 import * as chai from "chai";
-import * as yf from '#src/yahoo'
+import Yahoo from '#src/yahoo'
 import {should} from "chai";
+
+let yf = Yahoo.getApi();
 
 chai.should();
 
