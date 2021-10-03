@@ -2,7 +2,63 @@ import axios from "axios";
 import qs from 'qs';
 import * as config from '#src/config';
 import * as parser from 'xml2json'
-import {default as urlcat, query} from "urlcat";
+import urlcat from "urlcat";
+
+export async function getLeagueSettings() {
+    let league = `403.l.1000`
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/settings', {league_key: league});
+    let response = await makeRequest(url);
+    return response;
+}
+
+export async function auth() {
+    let code = await getAccessTokens();
+    if(code === '-1') return false;
+
+    yahoo.access_code = code;
+
+    return true;
+}
+
+export async function getGame(gameKey) {
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/game/:game_key', {game_key: gameKey});
+    let response = await makeRequest(url);
+    return response;
+}
+
+export async function getGameKeys() {
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/games;game_codes=nhl');
+    let response = await makeRequest(url);
+
+    if(response.fantasy_content){
+        return response.fantasy_content.games.game;
+    }
+
+    return [];
+}
+
+export async function getPublicLeages(gameKey) {
+    let league = `${gameKey}.l.1000`
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key', {league_key: league});
+    let response = await makeRequest(url);
+    return response;
+}
+
+export async function getTeams() {
+    let league = `403.l.1000`
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/teams', {league_key: league});
+
+    let response = await makeRequest(url);
+    return response.fantasy_content.league.teams;
+}
+
+export async function getScoreboard() {
+    let league = `403.l.1000`
+    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/scoreboard', {league_key: league});
+
+    let response = await makeRequest(url);
+    return response.fantasy_content.league.scoreboard;
+}
 
 let cfg = config.readConfig();
 const consumerkey = cfg.yahoo.consumerKey;
@@ -29,7 +85,7 @@ async function refreshAuthToken() {
         headers: {
             Authorization: `Basic ${yahoo.AUTH_HEADER}`,
             "Content-Type": "application/x-www-form-urlencoded",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36",
+            // "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36",
         },
         data: qs.stringify({
             redirect_uri: "oob",
@@ -46,6 +102,8 @@ async function refreshAuthToken() {
     cfg.yahoo.refreshToken = refresh;
     cfg.yahoo.accessToken = accessToken;
     config.saveConfig(cfg);
+
+    return response;
 }
 
 async function getAccessTokens(){
@@ -100,7 +158,6 @@ async function makeRequest(url){
             headers: {
                 Authorization: `Bearer ${cfg.yahoo.accessToken}`,
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36",
             },
         });
         const jsonData = JSON.parse(parser.toJson(response.data, {}));
@@ -122,19 +179,5 @@ async function makeRequest(url){
     }
 }
 
-export async function auth() {
-    let code = await getAccessTokens();
-    if(code === '-1') return false;
-
-    yahoo.access_code = code;
-
-    return true;
-}
-
-export async function getGame() {
-    let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/game/:game_key', {game_key: 303});
-    let response = await makeRequest(url);
-    return response;
-}
 
 
