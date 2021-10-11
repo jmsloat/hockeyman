@@ -7,17 +7,19 @@ chai.should();
 
 let discord = _discord.getClient();
 
-describe('discord nonsense', async (done) => {
-    async function callDone() {
-        done()
-    }
-    beforeEach(() => {
+describe('discord nonsense', () => {
+    before((done) => {
         discord.on('ready', () => {
-            callDone();
+            done();
         });
     });
 
     it('channels can get messages', async () => {
-        await discord.sendMessage('a test message from the thing');
+        await discord.sendMessage('a test message from the thing', 'robotland');
+    });
+
+    it('can tag a user', async () => {
+        await discord.sendAndTag('a message to - ', 'sloat', 'robotland');
     });
 })
+
