@@ -16,4 +16,4 @@ games.matchups.matchup.map( (matchup) => {
     matchups.push(`${away.name} vs ${home.name}`);
 });
 
-await discord.sendEmbed(matchups, 'Week ' + nWeek, '877893650154127470');
+await discord.sendEmbed(matchups, 'Week ' + nWeek);
