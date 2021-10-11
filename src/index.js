@@ -10,12 +10,17 @@ function initializeJobs() {
             {
                 name: 'job man',
                 path: './src/scheduled_jobs/fuck-you-kevin.js',
-                interval: "1 hour"
+                interval: "30 seconds"
             },
             {
                 name: 'draft_warning',
                 path: './src/scheduled_jobs/draft-warning.js',
                 interval: "at 7:00pm est"
+            },
+            {
+                name: 'matchups',
+                path: './src/scheduled_jobs/matchups.js',
+                interval: 'at 8:00 am est every monday'
             }
         ]
     });

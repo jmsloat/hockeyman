@@ -52,6 +52,11 @@ class YahooApi {
         let response = await makeRequest(url);
         return response.fantasy_content.league.scoreboard;
     }
+
+    async getMatchups() {
+        let scoreboard = await this.getScoreboard()
+        return scoreboard.matchups;
+    }
 }
 
 let api = new YahooApi();

@@ -42,7 +42,6 @@ describe('yahoo fantasy api', () => {
         });
     })
 
-
     describe('teams', () => {
         it('can get some teams', async () => {
             let teams = await yf.getTeams();
@@ -61,6 +60,12 @@ describe('yahoo fantasy api', () => {
 
             if(scoreboard === undefined) should.fail();
         })
+    })
+
+    describe('matchups', () => {
+        it('can get matchups', async () => {
+            let scoreboard = await yf.getMatchups();
+        });
     })
 
 
