@@ -19,6 +19,7 @@ class _DiscordClient extends EventEmitter {
     TOKEN = cfg.discord.token;
     CLIENTID = cfg.discord.clientId;
     GUILDID = cfg.discord.guildId;
+    CHANNELID = cfg.discord.channelId;
 
 
     constructor() {
@@ -95,13 +96,14 @@ class _DiscordClient extends EventEmitter {
             .setTitle(title)
             .setFooter('fuck off nerds')
         ;
-
+        let iterator = 1;
         fields.map( (thing) => {
-            embed.addField('game', thing)
+            embed.addField(iterator.toString(), thing)
+            iterator = iterator + 1;
         });
 
         if(channelName === undefined)
-            channelName = this.channel.name;
+            channelName = this.CHANNELID;
 
         let channel = await this.#getChannel(channelName);
         await channel.send({embeds : [embed]});

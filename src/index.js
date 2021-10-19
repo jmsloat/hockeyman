@@ -20,7 +20,12 @@ function initializeJobs() {
             {
                 name: 'matchups',
                 path: './src/scheduled_jobs/matchups.js',
-                interval: 'at 8:00 am est every monday'
+                cron: '0 10 * * 1'
+            },
+            {
+                name: 'standings',
+                path: './src/scheduled_jobs/standings.js',
+                cron: '0 9 * * 1'
             }
         ]
     });

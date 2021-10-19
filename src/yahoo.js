@@ -57,6 +57,13 @@ class YahooApi {
         let scoreboard = await this.getScoreboard()
         return scoreboard.matchups;
     }
+
+    async getStandings() {
+        let url = urlcat.default('https://fantasysports.yahooapis.com/fantasy/v2/league/:league_key/standings', {league_key: leagueId});
+
+        let response = await makeRequest(url);
+        return response.fantasy_content.league.standings;
+    }
 }
 
 let api = new YahooApi();

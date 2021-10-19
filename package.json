@@ -12,7 +12,7 @@
     "test": "mocha ",
     "update-players": "node scripts/update-players.js",
     "tsc": "tsc",
-    "start" : "node src/index.js"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
